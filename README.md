@@ -1,59 +1,77 @@
+# Label StoreMax - Flutter WooCommerce App
+
 <p align="center">
   <img width="200" height="125" src="https://woosignal.com/images/woosignal_logo_stripe_blue.png" alt="WooSignal logo">
 </p>
 
-# WooCommerce App: Label StoreMax
+Label StoreMax is a powerful and customizable Flutter app template for WooCommerce stores, developed by [WooSignal](https://woosignal.com). Turn your WooCommerce store into a beautiful mobile shopping experience.
 
-### Label StoreMax
+## ✨ Features
 
-[Official WooSignal WooCommerce App](https://woosignal.com)
+- 📱 Cross-platform (iOS & Android) support
+- 🛍️ Complete e-commerce functionality
+- 🔐 WordPress customer authentication
+- 🌓 Light and dark mode
+- 💳 Multiple payment gateways:
+  - Stripe
+  - PayPal
+  - RazorPay
+  - Cash On Delivery
+- 🌍 Multi-language support (en, es, pt, it, hi, fr, zh, tr, nl, de, id, th)
+- 🎨 Customizable UI through WooSignal dashboard
+- 📦 Real-time WooCommerce integration
+- 🚀 App store ready
 
-![alt text](https://woosignal.com/images/woocommerce_app_preview_2.png "WooCommerce app checkout experience")
-
-![alt text](https://woosignal.com/images/woocommerce_app_preview_3.png "WooCommerce app Login/Register for customers via WordPress")
-
-![alt text](https://woosignal.com/images/woocommerce_app_preview_1.png "Full integration with WooCommerce")
-
-![alt text](https://woosignal.com/images/mock_dark_light_mode.png "Dark and light mode shopping")
-
-### About Label StoreMax
-
-Label StoreMax is an App Template for WooCommerce stores. Your customers will be able to browse products, make orders and login via WordPress. You can also customise the look and feel of the app in the WooSignal dashboard.
-
-You can upload the app to the IOS app store and Google play store using Flutter.
-
-### Requirements
+## 🛠️ Requirements
 
 - WooCommerce Store 3.5+
-- Android Studio/VSCode (for running the app)
-- Flutter installed
+- Flutter SDK
+- Android Studio or Visual Studio Code
+- Basic knowledge of Flutter development
 
-### Getting Started
+## 🚀 Getting Started
 
-1. Download/Clone this repository
-2. Sign up for free on [WooSignal](https://woosignal.com) and link your WooCommerce store
-3. Add your app key into the **.env** file and hit play (with Android Studio) to build the app 🥳
+1. Clone this repository:
+   ```bash
+   git clone https://github.com/your-username/flutter-woocommerce-app.git
+   ```
 
-Full documentation this available [here](https://woosignal.com/docs/app/label-storemax)
+2. Create a free account at [WooSignal](https://woosignal.com) and connect your WooCommerce store
 
-## Some features integrated
+3. Configure your app:
+   - Copy the `.env.example` file to `.env`
+   - Add your WooSignal app key to the `.env` file
 
-- App Store Ready
-- Simple configuration
-- Browse products, make orders, customer login (via WordPress)
-- Change app name, logo, customize default language, currency + more
-- Light and dark mode
-- Stripe, Cash On Delivery, PayPal, RazorPay
-- Localized for en, es, pt, it, hi, fr, zh, tr, nl, de, id, th
-- Orders show as normal in WooCommerce
+4. Run the app:
+   ```bash
+   flutter pub get
+   flutter run
+   ```
 
-## Security Vulnerabilities
-If you discover a security vulnerability within WooSignal, please send an e-mail support@woosignal.com
+📚 For detailed setup instructions, visit our [documentation](https://woosignal.com/docs/app/label-storemax).
 
-## Uploading to the app stores
+## 🔐 Security
 
-- [IOS - Deployment](https://flutter.dev/docs/deployment/ios)
-- [Android - Deployment](https://flutter.dev/docs/deployment/android)
+Found a security issue? Please email support@woosignal.com. We take security seriously.
 
-## Licence
-The Label StoreMax framework is open-sourced software licensed under the MIT license.
+## 📱 App Store Deployment
+
+Ready to publish? Follow these official Flutter guides:
+- [iOS Deployment Guide](https://flutter.dev/docs/deployment/ios)
+- [Android Deployment Guide](https://flutter.dev/docs/deployment/android)
+
+## 📄 License
+
+Label StoreMax is open-source software licensed under the MIT license.
+
+## 🖼️ Screenshots
+
+<p align="center">
+  <img src="https://woosignal.com/images/woocommerce_app_preview_2.png" alt="Checkout Experience" width="250" />
+  <img src="https://woosignal.com/images/woocommerce_app_preview_3.png" alt="Login/Register" width="250" />
+  <img src="https://woosignal.com/images/woocommerce_app_preview_1.png" alt="WooCommerce Integration" width="250" />
+</p>
+
+<p align="center">
+  <img src="https://woosignal.com/images/mock_dark_light_mode.png" alt="Dark and Light Mode" width="500" />
+</p>
