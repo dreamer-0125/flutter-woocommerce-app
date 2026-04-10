@@ -49,101 +49,166 @@ class _AccountRegistrationPageState extends NyPage<AccountRegistrationPage> {
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(Icons.close),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () {
+            NyLogger.debug('⬅️ Close button pressed on registration page');
+            Navigator.pop(context);
+          },
         ),
         title: Text(trans("Register")),
         centerTitle: true,
       ),
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       body: SafeAreaWidget(
-        child: Column(
-          children: <Widget>[
-            Container(
-                margin: EdgeInsets.only(top: 10),
-                child: Row(
-                  children: <Widget>[
-                    Flexible(
-                      child: TextEditingRow(
-                        heading: trans("First Name"),
-                        controller: _tfFirstNameController,
-                        shouldAutoFocus: true,
-                        keyboardType: TextInputType.text,
-                      ),
+        child: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              SizedBox(height: 20),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      trans("Create Account"),
+                      style: Theme.of(context)
+                          .textTheme
+                          .headlineMedium!
+                          .copyWith(
+                            fontSize: 28,
+                            fontWeight: FontWeight.w700,
+                          ),
                     ),
-                    Flexible(
-                      child: TextEditingRow(
-                        heading: trans("Last Name"),
-                        controller: _tfLastNameController,
-                        shouldAutoFocus: false,
-                        keyboardType: TextInputType.text,
-                      ),
+                    SizedBox(height: 8),
+                    Text(
+                      trans("Join us today! Please fill in your details."),
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyMedium!
+                          .copyWith(
+                            color: Colors.grey,
+                            fontSize: 14,
+                          ),
                     ),
                   ],
-                )),
-            TextEditingRow(
-              heading: trans("Email address"),
-              controller: _tfEmailAddressController,
-              shouldAutoFocus: false,
-              keyboardType: TextInputType.emailAddress,
-            ),
-            TextEditingRow(
-              heading: trans("Password"),
-              controller: _tfPasswordController,
-              shouldAutoFocus: true,
-              obscureText: true,
-            ),
-            Padding(
-              padding: EdgeInsets.only(top: 10),
-              child: PrimaryButton(
-                title: trans("Sign up"),
-                isLoading: isLocked('register_user'),
-                action: _signUpTapped,
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 16),
-              child: InkWell(
-                onTap: _viewTOSModal,
-                child: RichText(
-                  text: TextSpan(
-                    text:
-                        '${trans("By tapping \"Register\" you agree to ")} ${AppHelper.instance.appConfig!.appName!}\'s ',
-                    children: <TextSpan>[
-                      TextSpan(
-                          text: trans("terms and conditions"),
-                          style: TextStyle(fontWeight: FontWeight.bold)),
-                      TextSpan(text: '  ${trans("and")}  '),
-                      TextSpan(
-                          text: trans("privacy policy"),
-                          style: TextStyle(fontWeight: FontWeight.bold)),
-                    ],
-                    style: TextStyle(
-                        color:
-                            (Theme.of(context).brightness == Brightness.light)
-                                ? Colors.black45
-                                : Colors.white70),
-                  ),
-                  textAlign: TextAlign.center,
                 ),
               ),
-            ),
-          ],
+              SizedBox(height: 30),
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  boxShadow:
+                      (Theme.of(context).brightness == Brightness.light)
+                          ? wsBoxShadow()
+                          : null,
+                  color: ThemeColor.get(context).backgroundContainer,
+                ),
+                padding: EdgeInsets.all(20),
+                margin: EdgeInsets.symmetric(horizontal: 20),
+                child: Column(
+                  children: <Widget>[
+                    Row(
+                      children: <Widget>[
+                        Flexible(
+                          child: TextEditingRow(
+                            heading: trans("First Name"),
+                            controller: _tfFirstNameController,
+                            shouldAutoFocus: true,
+                            keyboardType: TextInputType.text,
+                          ),
+                        ),
+                        SizedBox(width: 10),
+                        Flexible(
+                          child: TextEditingRow(
+                            heading: trans("Last Name"),
+                            controller: _tfLastNameController,
+                            shouldAutoFocus: false,
+                            keyboardType: TextInputType.text,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 15),
+                    TextEditingRow(
+                      heading: trans("Email address"),
+                      controller: _tfEmailAddressController,
+                      shouldAutoFocus: false,
+                      keyboardType: TextInputType.emailAddress,
+                    ),
+                    SizedBox(height: 15),
+                    TextEditingRow(
+                      heading: trans("Password"),
+                      controller: _tfPasswordController,
+                      shouldAutoFocus: true,
+                      obscureText: true,
+                    ),
+                    SizedBox(height: 20),
+                    PrimaryButton(
+                      title: trans("Sign up"),
+                      isLoading: isLocked('register_user'),
+                      action: () {
+                        NyLogger.debug('📝 Sign up button tapped');
+                        _signUpTapped();
+                      },
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 20),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20),
+                child: InkWell(
+                  onTap: () {
+                    NyLogger.debug('📄 Terms and conditions link tapped');
+                    _viewTOSModal();
+                  },
+                  child: RichText(
+                    text: TextSpan(
+                      text:
+                          '${trans("By tapping \"Register\" you agree to ")} ${AppHelper.instance.appConfig!.appName!}\'s ',
+                      children: <TextSpan>[
+                        TextSpan(
+                            text: trans("terms and conditions"),
+                            style: TextStyle(fontWeight: FontWeight.bold)),
+                        TextSpan(text: '  ${trans("and")}  '),
+                        TextSpan(
+                            text: trans("privacy policy"),
+                            style: TextStyle(fontWeight: FontWeight.bold)),
+                      ],
+                      style: TextStyle(
+                          color:
+                              (Theme.of(context).brightness == Brightness.light)
+                                  ? Colors.black45
+                                  : Colors.white70),
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+              SizedBox(height: 20),
+            ],
+          ),
         ),
       ),
     );
   }
 
   _signUpTapped() async {
+    NyLogger.info('📝 Registration attempt started');
+    
     String email = _tfEmailAddressController.text,
         password = _tfPasswordController.text,
         firstName = _tfFirstNameController.text,
         lastName = _tfLastNameController.text;
 
+    NyLogger.debug('📋 Registration input - Email: $email, First Name: $firstName, Last Name: $lastName');
+
     if (email.isNotEmpty) {
       email = email.trim();
+      NyLogger.debug('✂️ Email trimmed: $email');
     }
 
     if (!isEmail(email)) {
+      NyLogger.warning('⚠️ Invalid email format: $email');
       showToast(
           title: trans("Oops"),
           description: trans("That email address is not valid"),
@@ -152,6 +217,7 @@ class _AccountRegistrationPageState extends NyPage<AccountRegistrationPage> {
     }
 
     if (password.length <= 5) {
+      NyLogger.warning('⚠️ Password too short: ${password.length} characters (minimum 6 required)');
       showToast(
           title: trans("Oops"),
           description: trans("Password must be a min 6 characters"),
@@ -159,9 +225,14 @@ class _AccountRegistrationPageState extends NyPage<AccountRegistrationPage> {
       return;
     }
 
+    NyLogger.debug('✅ Registration validation passed, proceeding with API call');
+
     await lockRelease('register_user', perform: () async {
       WPUserRegisterResponse? wpUserRegisterResponse;
       try {
+        NyLogger.info('🌐 Calling WPJsonAPI registration endpoint...');
+        NyLogger.debug('📦 Registration payload - Email: ${email.toLowerCase()}, First Name: $firstName, Last Name: $lastName');
+        
         wpUserRegisterResponse = await WPJsonAPI.instance.api(
           (request) => request.wcRegister(
             email: email.toLowerCase(),
@@ -172,38 +243,48 @@ class _AccountRegistrationPageState extends NyPage<AccountRegistrationPage> {
             },
           ),
         );
+        
+        NyLogger.info('✅ Registration API call successful');
+        NyLogger.debug('📦 Registration response status: ${wpUserRegisterResponse?.status}');
       } on UsernameTakenException catch (e) {
+        NyLogger.warning('⚠️ UsernameTakenException: ${e.toString()}');
         showToast(
             title: trans("Oops!"),
             description: trans(e.message),
             style: ToastNotificationStyleType.danger);
-      } on InvalidNonceException catch (_) {
+      } on InvalidNonceException catch (e) {
+        NyLogger.error('❌ InvalidNonceException during registration: ${e.toString()}');
         showToast(
             title: trans("Invalid details"),
             description:
                 trans("Something went wrong, please contact our store"),
             style: ToastNotificationStyleType.danger);
-      } on ExistingUserLoginException catch (_) {
+      } on ExistingUserLoginException catch (e) {
+        NyLogger.warning('⚠️ ExistingUserLoginException: ${e.toString()}');
         showToast(
             title: trans("Oops!"),
             description: trans("A user already exists"),
             style: ToastNotificationStyleType.danger);
-      } on ExistingUserEmailException catch (_) {
+      } on ExistingUserEmailException catch (e) {
+        NyLogger.warning('⚠️ ExistingUserEmailException: $email already registered');
         showToast(
             title: trans("Oops!"),
             description: trans("That email is taken, try another"),
             style: ToastNotificationStyleType.danger);
-      } on UserAlreadyExistException catch (_) {
+      } on UserAlreadyExistException catch (e) {
+        NyLogger.warning('⚠️ UserAlreadyExistException: ${e.toString()}');
         showToast(
             title: trans("Oops!"),
             description: trans("A user already exists"),
             style: ToastNotificationStyleType.danger);
       } on EmptyUsernameException catch (e) {
+        NyLogger.warning('⚠️ EmptyUsernameException: ${e.toString()}');
         showToast(
             title: trans("Oops!"),
             description: trans(e.message),
             style: ToastNotificationStyleType.danger);
       } on Exception catch (e) {
+        NyLogger.error('❌ Generic exception during registration: ${e.toString()}');
         printError(e.toString());
         showToast(
             title: trans("Oops!"),
@@ -212,9 +293,11 @@ class _AccountRegistrationPageState extends NyPage<AccountRegistrationPage> {
       }
 
       if (wpUserRegisterResponse?.status != 200) {
+        NyLogger.warning('⚠️ Registration response status is not 200: ${wpUserRegisterResponse?.status}');
         return;
       }
 
+      NyLogger.info('🎉 Registration successful, triggering LoginEvent');
       event<LoginEvent>();
 
       showToast(
@@ -222,13 +305,21 @@ class _AccountRegistrationPageState extends NyPage<AccountRegistrationPage> {
           description: trans("you're now logged in"),
           style: ToastNotificationStyleType.success,
           icon: Icons.account_circle);
-      if (!mounted) return;
+      
+      NyLogger.debug('🔄 Navigating to redirect route: ${UserAuth.instance.redirect}');
+      if (!mounted) {
+        NyLogger.warning('⚠️ Widget not mounted, skipping navigation');
+        return;
+      }
+      
       navigatorPush(context,
           routeName: UserAuth.instance.redirect, forgetLast: 2);
+      NyLogger.info('✅ Registration flow completed successfully for user: $firstName $lastName');
     });
   }
 
   _viewTOSModal() async {
+    NyLogger.debug('📋 Displaying TOS modal');
     await showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -236,16 +327,25 @@ class _AccountRegistrationPageState extends NyPage<AccountRegistrationPage> {
         content: Text(trans("View Terms and Conditions or Privacy policy")),
         actions: <Widget>[
           MaterialButton(
-            onPressed: _viewTermsConditions,
+            onPressed: () {
+              NyLogger.debug('📄 Terms and Conditions button tapped in modal');
+              _viewTermsConditions();
+            },
             child: Text(trans("Terms and Conditions")),
           ),
           MaterialButton(
-            onPressed: _viewPrivacyPolicy,
+            onPressed: () {
+              NyLogger.debug('🔒 Privacy Policy button tapped in modal');
+              _viewPrivacyPolicy();
+            },
             child: Text(trans("Privacy Policy")),
           ),
           Divider(),
           TextButton(
-            onPressed: pop,
+            onPressed: () {
+              NyLogger.debug('❌ Closing TOS modal');
+              pop();
+            },
             child: Text('Close'),
           ),
         ],
@@ -254,11 +354,13 @@ class _AccountRegistrationPageState extends NyPage<AccountRegistrationPage> {
   }
 
   void _viewTermsConditions() {
+    NyLogger.info('🌐 Opening Terms and Conditions URL: ${_wooSignalApp!.appTermsLink}');
     Navigator.pop(context);
     openBrowserTab(url: _wooSignalApp!.appTermsLink!);
   }
 
   void _viewPrivacyPolicy() {
+    NyLogger.info('🌐 Opening Privacy Policy URL: ${_wooSignalApp!.appPrivacyLink}');
     Navigator.pop(context);
     openBrowserTab(url: _wooSignalApp!.appPrivacyLink!);
   }

@@ -39,153 +39,184 @@ class _AccountLoginPageState extends NyPage<AccountLoginPage> {
   @override
   Widget view(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       body: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  StoreLogo(height: 100),
-                  Flexible(
-                    child: Container(
-                      height: 70,
-                      padding: EdgeInsets.only(bottom: 20),
-                      margin: EdgeInsets.symmetric(horizontal: 20),
-                      alignment: Alignment.bottomLeft,
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(height: 40),
+              StoreLogo(height: 100),
+              SizedBox(height: 30),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      trans("Login"),
+                      style: Theme.of(context)
+                          .textTheme
+                          .headlineMedium!
+                          .copyWith(
+                            fontSize: 28,
+                            fontWeight: FontWeight.w700,
+                          ),
+                    ),
+                    SizedBox(height: 8),
+                    Text(
+                      trans("Welcome back! Please login to your account."),
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyMedium!
+                          .copyWith(
+                            color: Colors.grey,
+                            fontSize: 14,
+                          ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 30),
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  boxShadow:
+                      (Theme.of(context).brightness == Brightness.light)
+                          ? wsBoxShadow()
+                          : null,
+                  color: ThemeColor.get(context).backgroundContainer,
+                ),
+                padding: EdgeInsets.all(20),
+                margin: EdgeInsets.symmetric(horizontal: 20),
+                child: NyForm(
+                    form: form,
+                    crossAxisSpacing: 15,
+                    footer: Padding(
+                        padding: EdgeInsets.only(top: 20),
+                        child: Button.primary(
+                          text: trans("Login"),
+                          submitForm: (
+                            form,
+                            (data) async {
+                              NyLogger.debug('📝 Login form submitted');
+                              await _loginUser(
+                                  data['email'], data['password']);
+                            }
+                          ),
+                        ))),
+              ),
+              SizedBox(height: 20),
+              TextButton(
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Icon(
+                      Icons.account_circle,
+                      color: (Theme.of(context).brightness == Brightness.light)
+                          ? Colors.black38
+                          : Colors.white70,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(left: 8),
                       child: Text(
-                        trans("Login"),
-                        textAlign: TextAlign.left,
-                        style: Theme.of(context)
-                            .textTheme
-                            .headlineMedium!
-                            .copyWith(
-                              fontSize: 24,
-                              fontWeight: FontWeight.w700,
-                            ),
+                        trans("Create an account"),
+                        style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
-                    ),
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                      boxShadow:
-                          (Theme.of(context).brightness == Brightness.light)
-                              ? wsBoxShadow()
-                              : null,
-                      color: ThemeColor.get(context).backgroundContainer,
-                    ),
-                    padding: EdgeInsets.only(
-                        top: 20, bottom: 15, left: 16, right: 16),
-                    margin: EdgeInsets.symmetric(horizontal: 16),
-                    child: NyForm(
-                        form: form,
-                        crossAxisSpacing: 15,
-                        footer: Padding(
-                            padding: EdgeInsets.only(top: 20),
-                            child: Button.primary(
-                              text: trans("Login"),
-                              submitForm: (
-                                form,
-                                (data) async {
-                                  await _loginUser(
-                                      data['email'], data['password']);
-                                }
-                              ),
-                            ))),
-                  ),
-                ],
+                    )
+                  ],
+                ),
+                onPressed: () {
+                  NyLogger.debug('🔀 Navigating to registration page');
+                  routeTo(AccountRegistrationPage.path);
+                },
               ),
-            ),
-            TextButton(
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Icon(
-                    Icons.account_circle,
-                    color: (Theme.of(context).brightness == Brightness.light)
-                        ? Colors.black38
-                        : Colors.white70,
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(left: 8),
-                    child: Text(
-                      trans("Create an account"),
-                      style: Theme.of(context).textTheme.bodyLarge,
-                    ),
-                  )
-                ],
-              ),
-              onPressed: () => routeTo(AccountRegistrationPage.path),
-            ),
-            LinkButton(
-                title: trans("Forgot Password"),
-                action: () {
-                  String? forgotPasswordUrl =
-                      AppHelper.instance.appConfig!.wpLoginForgotPasswordUrl;
-                  if (forgotPasswordUrl != null) {
-                    openBrowserTab(url: forgotPasswordUrl);
-                  } else {
-                    NyLogger.info(
-                        "No URL found for \"forgot password\".\nAdd your forgot password URL here https://woosignal.com/dashboard/apps");
-                  }
-                }),
-            widget.showBackButton
-                ? Column(
-                    children: [
-                      Divider(),
-                      LinkButton(
-                        title: trans("Back"),
-                        action: () => Navigator.pop(context),
-                      ),
-                    ],
-                  )
-                : Padding(
-                    padding: EdgeInsets.only(bottom: 20),
-                  )
-          ],
+              SizedBox(height: 10),
+              LinkButton(
+                  title: trans("Forgot Password"),
+                  action: () {
+                    NyLogger.debug('🔑 Forgot password button tapped');
+                    String? forgotPasswordUrl =
+                        AppHelper.instance.appConfig!.wpLoginForgotPasswordUrl;
+                    if (forgotPasswordUrl != null) {
+                      NyLogger.info('🌐 Opening forgot password URL');
+                      openBrowserTab(url: forgotPasswordUrl);
+                    } else {
+                      NyLogger.warning(
+                          "⚠️ No URL found for \"forgot password\".\nAdd your forgot password URL here https://woosignal.com/dashboard/apps");
+                    }
+                  }),
+              SizedBox(height: 20),
+              widget.showBackButton
+                  ? Column(
+                      children: [
+                        Divider(height: 1),
+                        SizedBox(height: 10),
+                        LinkButton(
+                          title: trans("Back"),
+                          action: () {
+                            NyLogger.debug('⬅️ Back button pressed');
+                            Navigator.pop(context);
+                          },
+                        ),
+                        SizedBox(height: 20),
+                      ],
+                    )
+                  : SizedBox(height: 20),
+            ],
+          ),
         ),
       ),
     );
   }
 
   _loginUser(String email, String password) async {
+    NyLogger.info('🔐 Login attempt started for email: $email');
+    
     if (email.isNotEmpty) {
       email = email.trim();
+      NyLogger.debug('✂️ Email trimmed: $email');
     }
 
     await lockRelease('login_button', perform: () async {
       WPUserLoginResponse? wpUserLoginResponse;
       try {
+        NyLogger.debug('🌐 Calling WPJsonAPI login endpoint...');
         wpUserLoginResponse = await WPJsonAPI.instance.api(
             (request) => request.wpLogin(email: email, password: password));
-      } on InvalidNonceException catch (_) {
+        
+        NyLogger.info('✅ Login API call successful');
+        NyLogger.debug('📦 Login response status: ${wpUserLoginResponse?.status}');
+      } on InvalidNonceException catch (e) {
+        NyLogger.error('❌ InvalidNonceException during login: ${e.toString()}');
         showToast(
             title: trans("Invalid details"),
             description:
                 trans("Something went wrong, please contact our store"),
             style: ToastNotificationStyleType.danger);
-      } on InvalidEmailException catch (_) {
+      } on InvalidEmailException catch (e) {
+        NyLogger.warning('⚠️ InvalidEmailException: $email not found in system');
         showToast(
             title: trans("Invalid details"),
             description: trans("That email does not match our records"),
             style: ToastNotificationStyleType.danger);
-      } on InvalidUsernameException catch (_) {
+      } on InvalidUsernameException catch (e) {
+        NyLogger.warning('⚠️ InvalidUsernameException: ${e.toString()}');
         showToast(
             title: trans("Invalid details"),
             description: trans("That username does not match our records"),
             style: ToastNotificationStyleType.danger);
-      } on IncorrectPasswordException catch (_) {
+      } on IncorrectPasswordException catch (e) {
+        NyLogger.warning('⚠️ IncorrectPasswordException for email: $email');
         showToast(
             title: trans("Invalid details"),
             description: trans("That password does not match our records"),
             style: ToastNotificationStyleType.danger);
-      } on Exception catch (_) {
+      } on Exception catch (e) {
+        NyLogger.error('❌ Generic exception during login: ${e.toString()}');
         showToast(
             title: trans("Oops!"),
             description: trans("Invalid login credentials"),
@@ -194,13 +225,16 @@ class _AccountLoginPageState extends NyPage<AccountLoginPage> {
       }
 
       if (wpUserLoginResponse == null) {
+        NyLogger.warning('⚠️ Login response is null, aborting login flow');
         return;
       }
 
       if (wpUserLoginResponse.status != 200) {
+        NyLogger.warning('⚠️ Login response status is not 200: ${wpUserLoginResponse.status}');
         return;
       }
 
+      NyLogger.info('🎉 Login successful, triggering LoginEvent');
       event<LoginEvent>();
 
       showToast(
@@ -208,9 +242,16 @@ class _AccountLoginPageState extends NyPage<AccountLoginPage> {
           description: trans("Welcome back"),
           style: ToastNotificationStyleType.success,
           icon: Icons.account_circle);
-      if (!mounted) return;
+      
+      NyLogger.debug('🔄 Navigating to redirect route: ${UserAuth.instance.redirect}');
+      if (!mounted) {
+        NyLogger.warning('⚠️ Widget not mounted, skipping navigation');
+        return;
+      }
+      
       navigatorPush(context,
           routeName: UserAuth.instance.redirect, forgetLast: 1);
+      NyLogger.info('✅ Login flow completed successfully');
     });
   }
 }
